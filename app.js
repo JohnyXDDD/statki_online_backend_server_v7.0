@@ -78,7 +78,7 @@ io.on('connection', socket => { //Użytkownik się łączy z serwerem
     })
     socket.on('fire_to_enemy', block => { //przyjęcie strzału od użytkownika, sprawdzenie czy trafił, wysłanie do użytkowników informacji o trafieniach, zniszczeniach
         const room_data = rooms_data[socket.room] || null;
-        if (room_data)
+        if (room_data) {
             if (socket.id == room_data['turn']) {
                 let enemy = "";
                 for (const key in room_data['players']) {
@@ -136,9 +136,10 @@ io.on('connection', socket => { //Użytkownik się łączy z serwerem
                     delete_data(socket.room);// w razie robienie rewanżu usunąć
                 }
             }
-            else {
-                socket.emit('client_popup', "Niestety z powodu ograniczeń serwera gra się skończyła. Musicie zacząć od nowa. Przepraszam za utrudnienia");
-            }
+        }
+        else {
+            socket.emit('client_popup', "Niestety z powodu ograniczeń serwera gra się skończyła. Musicie zacząć od nowa. Przepraszam za utrudnienia");
+        }
     })
     socket.on('disconnect', () => {
         delete_data(socket.room)
